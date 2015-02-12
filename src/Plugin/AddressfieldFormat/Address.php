@@ -62,7 +62,7 @@ class Address implements AddressfieldFormatInterface{
     $format['locality_block'] = array(
       '#type' => 'addressfield_container',
       '#attributes' => array(
-        'class' => array('addressfield-container-inline', 'locality-block', 'country-' . $address['country']),
+        'class' => array('addressfield-container-inline', 'locality-block', isset($address['country']) ? 'country-' . $address['country'] : ''),
       ),
       '#weight' => 50,
     );
@@ -106,7 +106,7 @@ class Address implements AddressfieldFormatInterface{
 
     // Those countries do not seem to have a relevant postal code.
     static $countries_no_postal_code = array('AF', 'AG', 'AL', 'AO', 'BB', 'BI', 'BJ', 'BO', 'BS', 'BW', 'BZ', 'CF', 'CG', 'CM', 'CO', 'DJ', 'DM', 'EG', 'ER', 'FJ', 'GD', 'GH', 'GM', 'GQ', 'GY', 'HK', 'IE', 'KI', 'KM', 'KP', 'KY', 'LC', 'LY', 'ML', 'MR', 'NA', 'NR', 'RW', 'SB', 'SC', 'SL', 'SR', 'ST', 'TD', 'TG', 'TL', 'TO', 'TT', 'TV', 'TZ', 'UG', 'VC', 'VU', 'WS', 'ZW');
-    if (in_array($address['country'], $countries_no_postal_code)) {
+    if (isset($address['country']) && in_array($address['country'], $countries_no_postal_code)) {
       unset($format['locality_block']['postal_code']);
 
       // Remove the prefix from the first widget of the block.
@@ -117,7 +117,7 @@ class Address implements AddressfieldFormatInterface{
 
     // Those countries generally use the administrative area in postal addresses.
     static $countries_administrative_area = array('AR', 'AU', 'BR', 'BS', 'BY', 'BZ', 'CA', 'CN', 'DO', 'EG', 'ES', 'FJ', 'FM', 'GB', 'HN', 'ID', 'IE', 'IN', 'IT', 'JO', 'JP', 'KI', 'KN', 'KR', 'KW', 'KY', 'KZ', 'MX', 'MY', 'MZ', 'NG', 'NI', 'NR', 'NZ', 'OM', 'PA', 'PF', 'PG', 'PH', 'PR', 'PW', 'RU', 'SM', 'SO', 'SR', 'SV', 'TH', 'TW', 'UA', 'US', 'UY', 'VE', 'VI', 'VN', 'YU', 'ZA');
-    if (in_array($address['country'], $countries_administrative_area)) {
+    if (isset($address['country']) && in_array($address['country'], $countries_administrative_area)) {
       $format['locality_block']['administrative_area'] = array(
         '#type' => 'textfield',
         '#title' => t('State', array(), array('context' => 'Territory of a country')),
@@ -133,7 +133,7 @@ class Address implements AddressfieldFormatInterface{
     }
 
     // A few countries have a well-known list of administrative divisions.
-    if ($address['country'] == 'US') {
+    if (isset($address['country']) && $address['country'] == 'US') {
       $format['locality_block']['administrative_area']['#options'] = array(
         ''   => t('--'),
         'AL' => t('Alabama'),
@@ -206,7 +206,7 @@ class Address implements AddressfieldFormatInterface{
         $format['locality_block']['locality']['#suffix'] = ',';
       }
     }
-    else if ($address['country'] == 'IT') {
+    else if (isset($address['country']) && $address['country'] == 'IT') {
       $format['locality_block']['administrative_area']['#options'] = array(
         '' => t('--'),
         'AG' => t('Agrigento'),
@@ -322,7 +322,7 @@ class Address implements AddressfieldFormatInterface{
       );
       $format['locality_block']['administrative_area']['#title'] = t('Province');
     }
-    elseif ($address['country'] == 'BR') {
+    elseif (isset($address['country']) && $address['country'] == 'BR') {
       $format['locality_block']['dependent_locality'] = array(
         '#title' => t('Neighborhood'),
         '#tag' => 'div',
@@ -400,7 +400,7 @@ class Address implements AddressfieldFormatInterface{
       $format['locality_block']['postal_code']['#weight'] = 16;
       $format['locality_block']['postal_code']['#tag'] = 'div';
     }
-    else if ($address['country'] == 'CA') {
+    else if (isset($address['country']) && $address['country'] == 'CA') {
       $format['locality_block']['administrative_area']['#options'] = array(
         '' => t('--'),
         'AB' => t('Alberta'),
@@ -423,7 +423,7 @@ class Address implements AddressfieldFormatInterface{
         $format['locality_block']['locality']['#suffix'] = ',';
       }
     }
-    else if ($address['country'] == 'AU') {
+    else if (isset($address['country']) && $address['country'] == 'AU') {
       $format['locality_block']['administrative_area']['#options'] = array(
         '' => t('--'),
         'ACT' => t('Australian Capital Territory'),
@@ -436,7 +436,7 @@ class Address implements AddressfieldFormatInterface{
         'WA' => t('Western Australia'),
       );
     }
-    else if ($address['country'] == 'NZ') {
+    else if (isset($address['country']) && $address['country'] == 'NZ') {
       $format['locality_block']['locality']['#title'] = ('Town/City');
       $format['locality_block']['postal_code']['#title'] = t('Postcode');
       $format['locality_block']['administrative_area']['#render_option_value'] = TRUE;
@@ -466,7 +466,7 @@ class Address implements AddressfieldFormatInterface{
 
     // Those countries tend to put the postal code after the locality.
     static $countries_postal_code_after_locality = array('AU', 'BD', 'BF', 'BH', 'BM', 'BN', 'BT', 'CA', 'FM', 'GB', 'ID', 'IN', 'JM', 'JO', 'KH', 'LB', 'LS', 'LV', 'MM', 'MN', 'MV', 'MW', 'NG', 'NP', 'NZ', 'PE', 'PK', 'PR', 'PW', 'SA', 'SG', 'SO', 'TH', 'US', 'VI', 'VG', 'VN');
-    if (in_array($address['country'], $countries_postal_code_after_locality)) {
+    if (isset($address['country']) && in_array($address['country'], $countries_postal_code_after_locality)) {
       // Take the widget out of the array.
       $postal_code_widget = $format['locality_block']['postal_code'];
       $postal_code_widget['#prefix'] = ' ';
@@ -482,7 +482,7 @@ class Address implements AddressfieldFormatInterface{
     }
 
     // GB-specific tweaks
-    if ($address['country'] == 'GB') {
+    if (isset($address['country']) && $address['country'] == 'GB') {
       // Locality
       $format['locality_block']['locality'] = array_merge(
         $format['locality_block']['locality'],
